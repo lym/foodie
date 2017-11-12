@@ -1,15 +1,19 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
+
 import $ from "jquery";
 import _ from "underscore";
 
-import Session from "./models/session";
+import session from "./models/session";
+import Dashboard from './dashboard';
+import MaterialUITestView from './material_ui_test_view';
 
 class LoginForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: '',
-      password: '',
+      email       : '',
+      password    : '',
       errorMessage: ''
     };
     this.baseURL = 'http://127.0.0.1:5000'
@@ -30,9 +34,10 @@ class LoginForm extends React.Component {
   }
 
   loginSuccess(data) {
-    let session = new Session();
+    // let session = new Session();
     session.save(data.token);
-    console.log('Token in local storage: ' + localStorage.apiToken);
+    window.location.pathname = '/dashboard';
+    // history.push('/dashboard');
   }
 
   failure() {
@@ -85,20 +90,24 @@ class LoginForm extends React.Component {
 class LoginView extends React.Component {
   render() {
     return (
-      <div className="hold-transition login-page">
-        <div className="login-box">
-          <div className="login-logo">
-            <a href="#"><b>Foodie</b></a>
-          </div>
+      <div>
+        <div className="hold-transition login-page">
+          <div className="login-box">
+            <div className="login-logo">
+              <a href="#"><b>Foodie</b></a>
+            </div>
 
-          <div className="login-box-body">
-            <p className="login-box-msg">Sign in</p>
-            <LoginForm />
+            <div className="login-box-body">
+              <p className="login-box-msg">Sign in</p>
+              <LoginForm />
 
 
-            <br />
-            <a href="#" className="text-center">Register new account</a>
+              <br />
+              <Link to="/dashboard" className="text-center">Register new account</Link>
+              <hr />
+              <Link to="/material_ui_test" className="test-center">Material UI Test</Link>
 
+            </div>
           </div>
         </div>
       </div>
