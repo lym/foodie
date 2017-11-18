@@ -16,23 +16,15 @@ class FoodieDashboard extends React.Component {
     this.state = {
       logged_in: true
     };
-    /*
-    this.paperStyle = {
-      height: 100,
-      width: 100,
-      margin: 20,
-      textAlign: 'center',
-      display: 'inline-block'
-    };
-    */
   }
 
   handleChange(event, logged_in) {
     this.setState({logged_in: logged_in});
   }
 
-  handleClick(event) {
-    window.location.pathname = '/dashboard';
+  renderNewRecipeForm(event) {
+    /* Responsible for rendering the form for creating new recipes */
+    window.location.pathname = '/new_recipe';
   }
   renderRecipes(event) {
     window.location.pathname = '/recipes';
@@ -58,7 +50,7 @@ class FoodieDashboard extends React.Component {
             <List>
               <ListItem
                 primaryText="New Recipe"
-                onClick={this.handleClick}
+                onClick={this.renderNewRecipeForm}
               />
               <ListItem
                 primaryText="All Recipes"

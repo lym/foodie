@@ -5,6 +5,7 @@ import Dashboard from './dashboard';
 import LoginView from './login-view';
 import MaterialUITestView from './material_ui_test_view';
 import RecipesIndex from './recipes_index';
+import NewRecipeView from './new-recipes-view';
 
 class Application extends React.Component {
 
@@ -13,6 +14,7 @@ class Application extends React.Component {
       <Switch>
         <Route path="/dashboard" component={Dashboard} />
         <Route path="/login" component={LoginView} />
+        <Route path="/new_recipe" component={NewRecipeView} />
         <Route path="/material_ui_test" component={MaterialUITestView} />
         <Route path="/recipes" component={RecipesIndex} />
       </Switch>
