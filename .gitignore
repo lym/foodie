@@ -62,3 +62,5 @@ typings/
 
 reports/
 tests_output/
+
+.DS_Store
