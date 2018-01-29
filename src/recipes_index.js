@@ -42,7 +42,7 @@ class RecipesIndex extends React.Component {
   }
 
   handleClick(event) {
-    window.location.pathname = '/dashboard';
+    window.location.pathname = '/new_recipe';
   }
 
   showRecipe = (event) => {
