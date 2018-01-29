@@ -1,16 +1,11 @@
 import Backbone from 'backbone';
 
-var { Model, View, Collection, Router, LocalStorage } = Backbone;
-
-
-class BaseModel extends Model {
-  /*
+class BaseModel extends Backbone.Model.extend({}) {
   constructor() {
     super();
-    // this.defaults = {};
+    this.defaults = {};
     this.idAttribute = 'id';
   }
-  */
   url() {
     let links = this.get('links');
     let url   = links && links.self;
@@ -28,12 +23,4 @@ class Recipe extends BaseModel {
   }
 }
 
-class Recipes extends Collection {
-  constructor(options) {
-    super(options);
-    this.model = Recipe;
-    this.url = "http://127.0.0.1:5000/recipes/";
-  }
-}
-
-export {Recipes};
+export default Recipe;

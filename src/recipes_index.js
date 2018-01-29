@@ -5,40 +5,31 @@ import {List, ListItem} from 'material-ui/List';
 import Paper from 'material-ui/Paper';
 import Subheader from 'material-ui/Subheader';
 import Toggle from 'material-ui/Toggle';
-
 import _ from 'underscore';
 
 import LoggedIn from './logged-in';
 import LoginButton from './login-button';
-
-import {Recipes} from './models/recipe';
-
+import Recipes from './collections/recipes';
 
 class RecipesIndex extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       logged_in: true,
-      recipes: 'Looks like you do not have any recipes yet. Begin by creating some'
+      recipes: [],
+      recipes_loaded: false
     };
     this.recipes = new Recipes();
-    /*
     this.recipes.fetch({
       success: this.renderRecipes,
       error: this.fetchError
     });
-    */
-    this.recipes.fetch();
   }
 
-  renderRecipes(coln, res, options) {
-    console.log(coln.models);
-    _.each(res, function (recipe) {
-      console.log(recipe.title);
-    });
-    console.log(res.responseText);
-    console.log(res);
-    this.setState({recipes: res});
+  renderRecipes = (coln, res, options) => {
+    // console.log('res ' + JSON.stringify(res));
+    console.log(coln);
+    this.setState({recipes: res, recipes_loaded: true});
   }
 
   fetchError(coln, res, options) {
@@ -54,7 +45,15 @@ class RecipesIndex extends React.Component {
     window.location.pathname = '/dashboard';
   }
 
+  showRecipe = (event) => {
+    console.log('Attempting to show recipe...');
+    console.log(this.props);
+  }
+
   render() {
+    if (!this.state.recipes_loaded) {
+      return <h1>Loading recipes</h1>;
+    }
     return (
       <div>
         <Toggle
@@ -82,9 +81,15 @@ class RecipesIndex extends React.Component {
         </div>
         <div className="col-xs-8 col-md-8">
           <Paper>
-            <GridList>
-              <Subheader>{this.recipes.toJSON()[0].title}</Subheader>
-            </GridList>
+            <List>
+              {this.state.recipes.results.map((item) => (
+                <ListItem
+                  key={item.id.toString()}
+                  primaryText={item.title + ': ' + item.description}
+                  onClick={this.showRecipe} recipeid="12"
+                />
+              ))}
+            </List>
           </Paper>
         </div>
       </div>
