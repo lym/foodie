@@ -45,9 +45,10 @@ class RecipesIndex extends React.Component {
     window.location.pathname = '/new_recipe';
   }
 
-  showRecipe = (event) => {
+  showRecipe = (event, recipeId) => {
     console.log('Attempting to show recipe...');
-    console.log(this.props);
+    console.log('Received recipe ID is: ' + recipeId);
+    window.location.pathname = '/recipes/' + recipeId;
   }
 
   render() {
@@ -86,7 +87,7 @@ class RecipesIndex extends React.Component {
                 <ListItem
                   key={item.id.toString()}
                   primaryText={item.title + ': ' + item.description}
-                  onClick={this.showRecipe} recipeid="12"
+                  onClick={(ev, recId) => this.showRecipe(ev, item.id)}
                 />
               ))}
             </List>
