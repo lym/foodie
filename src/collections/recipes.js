@@ -3,7 +3,7 @@ import Recipe from '../models/recipe';
 
 var { Model, View, Collection, Router, LocalStorage } = Backbone;
 
-class Recipes extends Collection {
+class Recipes extends Backbone.Collection.extend({}) {
   constructor(options) {
     super(options);
     this.model = Recipe;

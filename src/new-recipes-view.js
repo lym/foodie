@@ -1,12 +1,24 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import AppBar from 'material-ui/AppBar';
+import {GridList, GridTile} from 'material-ui/GridList';
+import {List, ListItem} from 'material-ui/List';
+import Paper from 'material-ui/Paper';
+import Subheader from 'material-ui/Subheader';
+import Toggle from 'material-ui/Toggle';
+
+import LoggedIn from './logged-in';
+import LoginButton from './login-button';
 
 import $ from "jquery";
 import _ from "underscore";
 
 import session from "./models/session";
+import Recipe from './models/recipe';
+import Recipes from './collections/recipes';
 import Dashboard from './dashboard';
 import MaterialUITestView from './material_ui_test_view';
+import RecipeShowView from './recipe-show-view';
 
 class NewRecipeForm extends React.Component {
   constructor(props) {
@@ -37,11 +49,20 @@ class NewRecipeForm extends React.Component {
 
   recipeCreationSuccess(data) {
     console.log('Congratulations! Your recipe was created');
+    let recipe;
+    let recipes = new Recipes();
+    recipe = new Recipe();
+    recipe.set(data);
+    recipes.add([recipe]);
+    // console.log(recipe);
+    // console.log(recipe.get('result'));
     // TODO: Render recipe show page here
+    console.log(JSON.stringify(recipe));
+    window.location.pathname = '/recipes/' + recipe.get('id');
   }
 
-  failure() {
-    console.log('Data submission failed');
+  failure(error) {
+    console.log('Data submission failed due to: ' + JSON.stringify(error));
     // this.setState({errorMessage: 'Please check email or password!'});
   }
 
@@ -102,25 +123,62 @@ class NewRecipeForm extends React.Component {
 }
 
 class NewRecipeView extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      logged_in: session.authenticated() ? true : false,
+    };
+  }
+
+  renderRecipes () {
+    window.location = '/recipes';
+  }
+
   render() {
     return (
       <div>
-        <div className="hold-transition login-page">
-          <div className="login-box">
-            <div className="login-logo">
-              <a href="#"><b>New Recipe</b></a>
+        <Toggle
+            label="Logged in/out"
+            defaultToggled={true}
+            onToggle={(i, j) => this.handleChange(i, j)}
+            labelPosition="right"
+            style={{margin: 20}}
+        />
+        <AppBar
+          title="Foodie"
+          iconElementRight={this.state.logged_in ? <LoggedIn /> : <LoginButton />}
+        />
+
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col-xs-3 col-md-3">
+              <Paper>
+                <List>
+                  <ListItem
+                    primaryText="New Recipe"
+                    onClick={this.renderNewRecipeForm}
+                  />
+                  <ListItem
+                    primaryText="All Recipes"
+                    onClick={this.renderRecipes}
+                  />
+                </List>
+              </Paper>
             </div>
+            <div className="col-xs-9 col-md-9">
+              <Paper>
+                <div className="login-box-body">
+                  <p className="login-box-msg">New Recipe</p>
+                  <NewRecipeForm />
 
-            <div className="login-box-body">
-              <p className="login-box-msg">Create New Recipe</p>
-              <NewRecipeForm />
+                  <br />
 
-
-              <br />
-
+                </div>
+              </Paper>
             </div>
           </div>
         </div>
+
       </div>
     );
   }
