@@ -30,7 +30,7 @@ class EditRecipeForm extends React.Component {
       fulfilled   : '',
     };
     this.baseURL = 'http://127.0.0.1:5000'
-    this.newRecipeEndpoint = this.baseURL + '/recipes/';
+    this.editRecipeEndpoint = this.baseURL + '/recipes/' + this.props.recipe.id + '/';
 
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -45,17 +45,19 @@ class EditRecipeForm extends React.Component {
     }));
   }
 
-  recipeCreationSuccess(data) {
+  recipeCreationSuccess = (data) => {
     console.log('Recipe was successfully updated');
     let recipe;
     let recipes = Recipes;
     recipe = new Recipe();
     recipe.set(data);
     recipes.add([recipe]);
-    // TODO: Render recipe show page here
-    console.log(JSON.stringify(recipe));
-    // window.location.pathname = '/recipes/' + recipe.get('id');
-    this.props.history.push('/recipes/' + recipe.get('id'));
+    /*
+     * TODO: Render recipe show page here. Also replace window.location.pathname
+     * with this.props.history.push()
+     */
+    window.location.pathname = '/recipes/' + recipe.get('id');
+    // this.props.history.push('/recipes/' + recipe.get('id'));
   }
 
   failure(error) {
@@ -65,7 +67,11 @@ class EditRecipeForm extends React.Component {
 
   submitData(data) {
     /* Does the actual submission of the data to the server */
-    $.post(this.newRecipeEndpoint, data)
+    $.ajax({
+      url: this.editRecipeEndpoint,
+      data: data,
+      method: 'PATCH'
+    })
       .done($.proxy(this.recipeCreationSuccess, this))
       .fail($.proxy(this.failure, this));
   }
