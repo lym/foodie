@@ -6,7 +6,7 @@ class BaseModel extends Backbone.Model.extend({}) {
     this.defaults = {};
     this.idAttribute = 'id';
   }
-  url() {
+  url = () => {
     let links = this.get('links');
     let url   = links && links.self;
     if (!url) {
@@ -18,8 +18,13 @@ class BaseModel extends Backbone.Model.extend({}) {
 }
 
 class Recipe extends BaseModel {
-  constructor() {
+  constructor(url) {
     super();
+    this.modelUrl = url;
+  }
+  url = () => {
+    let result = this.modelUrl;
+    return result;
   }
 }
 
