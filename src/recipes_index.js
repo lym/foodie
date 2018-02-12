@@ -19,7 +19,7 @@ class RecipesIndex extends React.Component {
       recipes: [],
       recipes_loaded: false
     };
-    this.recipes = new Recipes();
+    this.recipes = Recipes;  // Here
     this.recipes.fetch({
       success: this.renderRecipes,
       error: this.fetchError
