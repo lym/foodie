@@ -50,7 +50,7 @@ class NewRecipeForm extends React.Component {
   recipeCreationSuccess(data) {
     console.log('Congratulations! Your recipe was created');
     let recipe;
-    let recipes = new Recipes();
+    let recipes = Recipes;
     recipe = new Recipe();
     recipe.set(data);
     recipes.add([recipe]);
