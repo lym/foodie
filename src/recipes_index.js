@@ -1,4 +1,5 @@
 import React from 'react';
+import {withRouter, Redirect} from 'react-router-dom';
 import AppBar from 'material-ui/AppBar';
 import {GridList, GridTile} from 'material-ui/GridList';
 import {List, ListItem} from 'material-ui/List';
@@ -28,6 +29,7 @@ class RecipesIndex extends React.Component {
 
   renderRecipes = (coln, res, options) => {
     // console.log('res ' + JSON.stringify(res));
+    // Perhaps initialize Recipes collection here and access all coln mtds
     console.log(coln);
     this.setState({recipes: res, recipes_loaded: true});
   }
@@ -41,14 +43,14 @@ class RecipesIndex extends React.Component {
     this.setState({logged_in: logged_in});
   }
 
-  handleClick(event) {
-    window.location.pathname = '/new_recipe';
+  handleClick = (event) => {
+    this.props.history.push('/new_recipe');
   }
 
   showRecipe = (event, recipeId) => {
     console.log('Attempting to show recipe...');
     console.log('Received recipe ID is: ' + recipeId);
-    window.location.pathname = '/recipes/' + recipeId;
+    this.props.history.push('/recipes/' + recipeId);
   }
 
   render() {
@@ -98,5 +100,7 @@ class RecipesIndex extends React.Component {
     );
   }
 }
+
+RecipesIndex = withRouter(RecipesIndex);
 
 export default RecipesIndex;
