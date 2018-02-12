@@ -40,7 +40,8 @@ class RecipeShowView extends React.Component {
         console.log('Error: Model not retrieved');
       }
     })
-    super(props);
+    super(props);  // FIXME: Why is this here?
+    this.deleteRecipeEndpoint = recipes.url + props.match.params.id + '/';
     this.state = {
       logged_in: session.authenticated() ? true : false,
       editMode: false,
@@ -64,6 +65,26 @@ class RecipeShowView extends React.Component {
     console.log('Received recipe ID is: ' + recipe['id']);
     // this.props.history.push('/recipes/' + this.state.recipe['id'] + '/edit/');
     this.setState({editMode: true});
+  }
+
+  recipeDeletionSuccess = (data) => {
+    console.log(JSON.stringify(data));
+    console.log('Recipe successfully deleted!');
+  }
+
+  failure = (data) => {
+    console.log(JSON.stringify(data));
+    console.log('Recipe deletion failed!');
+  }
+
+  deleteRecipe = (event, recipe) => {
+    $.ajax({
+      url: this.deleteRecipeEndpoint,
+      method: 'DELETE'
+    })
+      .done($.proxy(this.recipeDeletionSuccess, this))
+      .fail($.proxy(this.failure, this));
+    this.props.history.push('/recipes');
   }
 
   render() {
@@ -127,7 +148,10 @@ class RecipeShowView extends React.Component {
                           label="Edit Recipe" recipemodel={this.state.recipe}
                           onClick={(ev, recipe) => this.editRecipe(ev, this.state.recipe)}
                         />
-                        <FlatButton label="Delete Recipe" />
+                        <FlatButton
+                          label="Delete Recipe"
+                          onClick={(ev, recipe) => this.deleteRecipe(ev, this.state.recipe)}
+                        />
                       </CardActions>
                     </Card>
                     <br />
