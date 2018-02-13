@@ -21,6 +21,7 @@ import Recipe from './models/recipe.js';
 import Dashboard from './dashboard';
 import MaterialUITestView from './material_ui_test_view';
 import EditRecipeView from './edit-recipe-view';
+import {FoodieAppBar} from './recipes_index.js';
 
 
 class RecipeShowView extends React.Component {
@@ -94,17 +95,7 @@ class RecipeShowView extends React.Component {
       }
       return (
         <div>
-          <Toggle
-              label="Logged in/out"
-              defaultToggled={true}
-              onToggle={(i, j) => this.handleChange(i, j)}
-              labelPosition="right"
-              style={{margin: 20}}
-          />
-          <AppBar
-            title="Foodie"
-            iconElementRight={this.state.logged_in ? <LoggedIn /> : <LoginButton />}
-          />
+          <FoodieAppBar />
 
           <div className="container-fluid">
             <div className="row">

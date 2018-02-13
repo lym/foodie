@@ -12,6 +12,37 @@ import LoggedIn from './logged-in';
 import LoginButton from './login-button';
 import Recipes from './collections/recipes';
 
+export class FoodieAppBar extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      logged_in: true
+    }
+  }
+
+  handleChange(event, logged_in) {
+    this.setState({logged_in: logged_in});
+  }
+
+  render() {
+    return (
+      <div>
+        <Toggle
+            label="Logged in/out"
+            defaultToggled={true}
+            onToggle={(i, j) => this.handleChange(i, j)}
+            labelPosition="right"
+            style={{margin: 20}}
+          />
+          <AppBar
+            title="Foodie"
+            iconElementRight={this.state.logged_in ? <LoggedIn /> : <LoginButton />}
+          />
+      </div>
+    );
+  }
+}
+
 class RecipesIndex extends React.Component {
   constructor(props) {
     super(props);
@@ -59,17 +90,7 @@ class RecipesIndex extends React.Component {
     }
     return (
       <div>
-        <Toggle
-            label="Logged in/out"
-            defaultToggled={true}
-            onToggle={(i, j) => this.handleChange(i, j)}
-            labelPosition="right"
-            style={{margin: 20}}
-          />
-          <AppBar
-            title="Foodie"
-            iconElementRight={this.state.logged_in ? <LoggedIn /> : <LoginButton />}
-          />
+        <FoodieAppBar />
       <div className="row">
         <div className="col-xs-3 col-md-3">
           <Paper>
