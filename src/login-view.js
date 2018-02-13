@@ -36,8 +36,8 @@ class LoginForm extends React.Component {
   loginSuccess(data) {
     // let session = new Session();
     session.save(data.token);
-    window.location.pathname = '/dashboard';
-    // history.push('/dashboard');
+    window.location.pathname = '/recipes';
+    // this.props.history.push('/recipes');
   }
 
   failure() {
