@@ -21,7 +21,7 @@ import MaterialUITestView from './material_ui_test_view';
 import RecipeShowView from './recipe-show-view';
 import {FoodieAppBar, FoodieSidebarMenu} from './recipes_index.js';
 
-class NewRecipeForm extends React.Component {
+export class NewRecipeForm extends React.Component {
   constructor(props) {
     console.log(session.get('token'));
     super(props);
@@ -118,6 +118,50 @@ class NewRecipeForm extends React.Component {
             <button type="submit" className="btn btn-primary btn-block btn-flat">Create Recipe</button>
           </div>
         </div>
+      </form>
+    );
+  }
+}
+
+export class NewInstructionForm extends NewRecipeForm {
+  constructor(props) {
+    super(props);
+    console.log('NewInstructionForm props: ' + JSON.stringify(this.props));
+  }
+
+  render() {
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <div className="form-group has-feedback">
+          <input type="text" className="form-control" placeholder="Title"
+                 name="title" required/>
+          <span className="glyphicon glyphicon-envelope form-control-feedback"></span>
+        </div>
+        <div className="form-group has-feedback">
+          <input type="text" className="form-control"
+                 placeholder="Description" name="description"
+                  />
+          <span className="glyphicon glyphicon-lock form-control-feedback"></span>
+          <span className="error-block">
+            {this.state.errorMessage}
+          </span>
+        </div>
+
+        <input type="hidden" className="form-control" id="user_id" name='user_id'
+               value={this.state.userId} />
+        <input type="hidden" className="form-control" id="recipe_id" name='recipe_id'
+               value={this.props.recipe.id} />
+
+        {/*
+        <div className="row">
+          <div className="col-xs-12">
+            <button type="submit"
+                    className="btn btn-primary btn-block btn-flat">
+              Add Instruction
+            </button>
+          </div>
+        </div>
+        */}
       </form>
     );
   }

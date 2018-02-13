@@ -1,7 +1,8 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 import AppBar from 'material-ui/AppBar';
 import {Card, CardActions, CardHeader, CardMedia, CardText, CardTitle} from 'material-ui/Card';
+import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import {GridList, GridTile} from 'material-ui/GridList';
 import {List, ListItem} from 'material-ui/List';
@@ -22,6 +23,7 @@ import Dashboard from './dashboard';
 import MaterialUITestView from './material_ui_test_view';
 import EditRecipeView from './edit-recipe-view';
 import {FoodieAppBar, FoodieSidebarMenu} from './recipes_index.js';
+import {NewInstructionForm} from './new-recipes-view';
 
 
 class RecipeShowView extends React.Component {
@@ -46,8 +48,45 @@ class RecipeShowView extends React.Component {
     this.state = {
       logged_in: session.authenticated() ? true : false,
       editMode: false,
+      addingInstruction: false,  // Set to true to render new instructions modal
       recipe: {}
     };
+  }
+
+  actions = () => {
+    let actions = [
+      <NewInstructionForm recipe={this.state.recipe}/>,
+      <FlatButton
+        label="Cancel"
+        primary={true}
+        onClick={this.closeInstrModal}
+      />,
+      <FlatButton
+        label="Submit"
+        primary={true}
+        keyboardFocused={true}
+        onClick={this.submitInstruction}
+      />,
+    ];
+    return actions;
+  }
+
+  closeInstrModal = (ev) => {
+    this.setState({addingInstruction: false});
+  }
+
+  instructionCreationSuccess(data) {
+    this.setState({addingInstruction: false});
+    this.props.history.push('/recipes/' + data.recipe_id);
+  }
+
+  submitInstruction = (ev) => {
+    let newInstructionForm = new NewInstructionForm();
+    let instructitionsEndpoint = newInstructionForm.baseURL + '/instructions/'
+    let formData = newInstructionForm.serializeForm($("form")); //.serializeArray();
+    $.post(instructitionsEndpoint, formData)
+      .done($.proxy(this.instructionCreationSuccess, this))
+      .fail($.proxy(newInstructionForm.failure, this));
   }
 
   setRecipes = (model, response, options) => {
@@ -66,6 +105,10 @@ class RecipeShowView extends React.Component {
     console.log('Received recipe ID is: ' + recipe['id']);
     // this.props.history.push('/recipes/' + this.state.recipe['id'] + '/edit/');
     this.setState({editMode: true});
+  }
+
+  addInstruction = (event, recipe) => {
+    this.setState({addingInstruction: true});
   }
 
   recipeDeletionSuccess = (data) => {
@@ -88,6 +131,11 @@ class RecipeShowView extends React.Component {
     this.props.history.push('/recipes');
   }
 
+  appendInstruction = () => {
+    console.log('Instruction model closed!');
+    this.setState({open: false});
+  };
+
   render() {
     if (!this.state.editMode) {
       if (!this.state.recipe) {
@@ -100,6 +148,17 @@ class RecipeShowView extends React.Component {
           <div className="container-fluid">
             <div className="row">
               <FoodieSidebarMenu />
+
+              <Dialog
+                title={"Adding instructions for " + this.state.recipe.title}
+                actions={this.actions()}
+                modal={false}
+                open={this.state.addingInstruction}
+                onRequestClose={this.appendInstruction}
+              >
+              {/*The actions in this window were passed in as an array of React objects.*/}
+              </Dialog>
+
               <div className="col-xs-9 col-md-9">
                 <Paper>
                   <div className="login-box-body">
@@ -126,9 +185,18 @@ class RecipeShowView extends React.Component {
                           label="Edit Recipe" recipemodel={this.state.recipe}
                           onClick={(ev, recipe) => this.editRecipe(ev, this.state.recipe)}
                         />
+
+                        <FlatButton
+                          // href={'/recipes/' + this.state.recipe['id'] + '/edit/'}
+                          label="Add Instruction" recipemodel={this.state.recipe}
+                          onClick={(ev, recipe) => this.addInstruction(ev, this.state.recipe)}
+                          primary={true}
+                        />
+
                         <FlatButton
                           label="Delete Recipe"
                           onClick={(ev, recipe) => this.deleteRecipe(ev, this.state.recipe)}
+                          secondary={true}
                         />
                       </CardActions>
                     </Card>
@@ -149,4 +217,5 @@ class RecipeShowView extends React.Component {
   }
 }
 
+RecipeShowView = withRouter(RecipeShowView);
 export default RecipeShowView;
