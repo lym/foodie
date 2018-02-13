@@ -18,18 +18,21 @@ import _ from "underscore";
 
 import session from "./models/session";
 import Recipes from './collections/recipes';
+import Instructions from './collections/instructions';
 import Recipe from './models/recipe.js';
 import Dashboard from './dashboard';
 import MaterialUITestView from './material_ui_test_view';
 import EditRecipeView from './edit-recipe-view';
 import {FoodieAppBar, FoodieSidebarMenu} from './recipes_index.js';
 import {NewInstructionForm} from './new-recipes-view';
+import RecipeInstructions from './components/recipe-instructions';
 
 
 class RecipeShowView extends React.Component {
   constructor(props) {
     super(props);
     let recipes = Recipes;
+    this.allInstructionsURL = "http://127.0.0.1:5000/instructions/";
     this.recipe = new Recipe(recipes.url + props.match.params.id + '/');
     this.recipe.fetch({
       /*
@@ -43,14 +46,31 @@ class RecipeShowView extends React.Component {
         console.log('Error: Model not retrieved');
       }
     })
+    let instructions = new Instructions({
+      url: this.allInstructionsURL + "?recipe=" + props.match.params.id
+    });
+    instructions.fetch({
+      success: this.logInstructions,
+      error: this.failedInst
+    });
     super(props);  // FIXME: Why is this here?
     this.deleteRecipeEndpoint = recipes.url + props.match.params.id + '/';
     this.state = {
       logged_in: session.authenticated() ? true : false,
       editMode: false,
       addingInstruction: false,  // Set to true to render new instructions modal
-      recipe: {}
+      recipe: {},
+      instructions: []
     };
+  }
+
+  logInstructions = (coln, res, options) => {
+    console.log('Retrieved Instructions' + JSON.stringify(res));
+    this.setState({instructions: res});
+  }
+
+  failedInst = (coln, res, options) => {
+    console.log('Retrieval failed because ' + JSON.stringify(res));
   }
 
   actions = () => {
@@ -156,38 +176,29 @@ class RecipeShowView extends React.Component {
                 open={this.state.addingInstruction}
                 onRequestClose={this.appendInstruction}
               >
-              {/*The actions in this window were passed in as an array of React objects.*/}
               </Dialog>
 
               <div className="col-xs-9 col-md-9">
                 <Paper>
                   <div className="login-box-body">
                     <Card>
-                      <CardHeader title={this.state.recipe['title']}>
+                      <CardHeader title={
+                        this.state.recipe['title'] + ': ' +
+                        this.state.recipe['description']
+                      }>
                       </CardHeader>
-                      {/*
-                      <CardMedia
-                        overlay={<CardTitle title={this.state.recipe.title} subtitle="Overlay subtitle" />}
-                        >
-                        <img
-                          src="http://yummy-recipez.herokuapp.com/static/images/generic_recipe_image.png"
-                          alt= "Generic recipe Image" // height="100" width="100"
-                        />
-                      </CardMedia>
-                      */}
+                      <hr />
                       <CardText>
-                        {this.state.recipe['description']}
+                        <RecipeInstructions instructions={this.state.instructions} />
                       </CardText>
 
                       <CardActions>
                         <FlatButton
-                          // href={'/recipes/' + this.state.recipe['id'] + '/edit/'}
                           label="Edit Recipe" recipemodel={this.state.recipe}
                           onClick={(ev, recipe) => this.editRecipe(ev, this.state.recipe)}
                         />
 
                         <FlatButton
-                          // href={'/recipes/' + this.state.recipe['id'] + '/edit/'}
                           label="Add Instruction" recipemodel={this.state.recipe}
                           onClick={(ev, recipe) => this.addInstruction(ev, this.state.recipe)}
                           primary={true}
