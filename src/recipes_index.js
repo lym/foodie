@@ -43,6 +43,43 @@ export class FoodieAppBar extends React.Component {
   }
 }
 
+class FoodieSidebarMenu extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  handleClick = (event) => {
+    this.props.history.push('/new_recipe');
+  }
+
+  renderRecipes = () => {
+    // window.location = '/recipes';
+    this.props.history.push('/recipes');
+  }
+
+  render() {
+    return (
+        <div className="col-xs-3 col-md-3">
+          <Paper>
+            <List>
+              <ListItem
+                primaryText="New Recipe"
+                onClick={this.handleClick}
+              />
+              <ListItem
+                primaryText="All Recipes"
+                onClick={this.renderRecipes}
+              />
+            </List>
+          </Paper>
+        </div>
+    );
+  }
+}
+
+FoodieSidebarMenu = withRouter(FoodieSidebarMenu);
+export {FoodieSidebarMenu};
+
 class RecipesIndex extends React.Component {
   constructor(props) {
     super(props);
@@ -92,17 +129,7 @@ class RecipesIndex extends React.Component {
       <div>
         <FoodieAppBar />
       <div className="row">
-        <div className="col-xs-3 col-md-3">
-          <Paper>
-            <List>
-              <ListItem
-                primaryText="New Recipe"
-                onClick={this.handleClick}
-              />
-              <ListItem primaryText="All Recipes" />
-            </List>
-          </Paper>
-        </div>
+        <FoodieSidebarMenu />
         <div className="col-xs-8 col-md-8">
           <Paper>
             <List>

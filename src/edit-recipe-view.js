@@ -19,7 +19,7 @@ import Recipes from './collections/recipes';
 import Dashboard from './dashboard';
 import MaterialUITestView from './material_ui_test_view';
 import RecipeShowView from './recipe-show-view';
-import {FoodieAppBar} from './recipes_index.js';
+import {FoodieAppBar, FoodieSidebarMenu} from './recipes_index.js';
 
 class EditRecipeForm extends React.Component {
   constructor(props, recipeID) {
@@ -149,20 +149,7 @@ class EditRecipeView extends React.Component {
 
         <div className="container-fluid">
           <div className="row">
-            <div className="col-xs-3 col-md-3">
-              <Paper>
-                <List>
-                  <ListItem
-                    primaryText="New Recipe"
-                    onClick={this.renderNewRecipeForm}
-                  />
-                  <ListItem
-                    primaryText="All Recipes"
-                    onClick={this.renderRecipes}
-                  />
-                </List>
-              </Paper>
-            </div>
+            <FoodieSidebarMenu />
             <div className="col-xs-9 col-md-9">
               <Paper>
                 <div className="login-box-body">
