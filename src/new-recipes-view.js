@@ -19,6 +19,7 @@ import Recipes from './collections/recipes';
 import Dashboard from './dashboard';
 import MaterialUITestView from './material_ui_test_view';
 import RecipeShowView from './recipe-show-view';
+import {FoodieAppBar, FoodieSidebarMenu} from './recipes_index.js';
 
 class NewRecipeForm extends React.Component {
   constructor(props) {
@@ -137,34 +138,11 @@ class NewRecipeView extends React.Component {
   render() {
     return (
       <div>
-        <Toggle
-            label="Logged in/out"
-            defaultToggled={true}
-            onToggle={(i, j) => this.handleChange(i, j)}
-            labelPosition="right"
-            style={{margin: 20}}
-        />
-        <AppBar
-          title="Foodie"
-          iconElementRight={this.state.logged_in ? <LoggedIn /> : <LoginButton />}
-        />
+        <FoodieAppBar />
 
         <div className="container-fluid">
           <div className="row">
-            <div className="col-xs-3 col-md-3">
-              <Paper>
-                <List>
-                  <ListItem
-                    primaryText="New Recipe"
-                    onClick={this.renderNewRecipeForm}
-                  />
-                  <ListItem
-                    primaryText="All Recipes"
-                    onClick={this.renderRecipes}
-                  />
-                </List>
-              </Paper>
-            </div>
+            <FoodieSidebarMenu />
             <div className="col-xs-9 col-md-9">
               <Paper>
                 <div className="login-box-body">
