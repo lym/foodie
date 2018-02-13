@@ -4,6 +4,14 @@ import MenuItem from 'material-ui/MenuItem';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import React from 'react';
 
+import session from './models/session';
+
+let logout;
+logout = () => {
+  session.delete();
+  window.location.pathname = 'login';
+}
+
 const LoggedIn = (props) => (
   <IconMenu
     {...props}
@@ -15,7 +23,10 @@ const LoggedIn = (props) => (
   >
     <MenuItem primaryText="Help" />
     <MenuItem primaryText="Settings" />
-    <MenuItem primaryText="Sign Out" />
+    <MenuItem
+      primaryText="Sign Out"
+      onClick={logout}
+    />
   </IconMenu>
 );
 
