@@ -27,6 +27,7 @@ export class FoodieAppBar extends React.Component {
   render() {
     return (
       <div>
+      {/*
         <Toggle
             label="Logged in/out"
             defaultToggled={true}
@@ -34,6 +35,7 @@ export class FoodieAppBar extends React.Component {
             labelPosition="right"
             style={{margin: 20}}
           />
+       */}
           <AppBar
             title="Foodie"
             iconElementRight={this.state.logged_in ? <LoggedIn /> : <LoginButton />}
