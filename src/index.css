@@ -12,6 +12,7 @@
 html,
 body {
   height: 100%;
+  background-color: #e6ecf0;
 }
 .layout-boxed html,
 .layout-boxed body {
@@ -5564,4 +5565,8 @@ table.text-center th {
 .full-opacity-hover:hover {
   opacity: 1;
   filter: alpha(opacity=100);
+}
+
+div#app {
+  background-color: #e6ecf0;
 }
