@@ -182,10 +182,9 @@ class RecipeShowView extends React.Component {
                 <Paper>
                   <div className="login-box-body">
                     <Card>
-                      <CardHeader title={
-                        this.state.recipe['title'] + ': ' +
-                        this.state.recipe['description']
-                      }>
+                      <CardHeader title={this.state.recipe['title']}
+                        subtitle={this.state.recipe['description']}
+                      >
                       </CardHeader>
                       <hr />
                       <CardText>
