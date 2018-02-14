@@ -4,8 +4,10 @@ import AppBar from 'material-ui/AppBar';
 import {GridList, GridTile} from 'material-ui/GridList';
 import {List, ListItem} from 'material-ui/List';
 import Paper from 'material-ui/Paper';
+import SearchBar from 'material-ui-search-bar';
 import Subheader from 'material-ui/Subheader';
 import Toggle from 'material-ui/Toggle';
+import $ from 'jquery';
 import _ from 'underscore';
 
 import LoggedIn from './logged-in';
@@ -16,7 +18,8 @@ export class FoodieAppBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      logged_in: true
+      logged_in: true,
+      searchTerm: ''
     }
   }
 
@@ -123,6 +126,22 @@ class RecipesIndex extends React.Component {
     this.props.history.push('/recipes/' + recipeId);
   }
 
+  goodSearch = (data) => {
+    // Update `recipes` which will trigger a re-render.
+    this.setState({recipes: data, recipes_loaded: true});
+  }
+
+  badSearch = (data) => {
+    console.log('Search failed due to ' + JSON.stringify(data));
+  }
+
+  searchRecipes = () => {
+    let searchURL = 'http://127.0.0.1:5000/search/recipes?q=' +
+      this.state.searchTerm;
+    console.log('Search is being requested ' + this.state.searchTerm);
+    $.get(searchURL).done(this.goodSearch).fail(this.badSearch);
+  }
+
   render() {
     if (!this.state.recipes_loaded) {
       return <h1>Loading recipes</h1>;
@@ -133,6 +152,15 @@ class RecipesIndex extends React.Component {
       <div className="row">
         <FoodieSidebarMenu />
         <div className="col-xs-8 col-md-8">
+          <SearchBar
+            hintText="Search recipes"
+            onChange={
+              (value) => {
+                this.setState({searchTerm: value});
+              }
+            }
+            onRequestSearch={this.searchRecipes}
+          />
           <Paper>
             <List>
               {this.state.recipes.results.map((item) => (
