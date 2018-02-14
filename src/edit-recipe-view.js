@@ -19,7 +19,8 @@ import Recipes from './collections/recipes';
 import Dashboard from './dashboard';
 import MaterialUITestView from './material_ui_test_view';
 import RecipeShowView from './recipe-show-view';
-import {FoodieAppBar, FoodieSidebarMenu} from './recipes_index.js';
+import {FoodieAppBar} from './components/foodie-app-bar';
+import {FoodieSidebarMenu} from './components/foodie-sidebar-menu';
 
 class EditRecipeForm extends React.Component {
   constructor(props, recipeID) {

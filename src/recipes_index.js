@@ -13,77 +13,9 @@ import _ from 'underscore';
 import LoggedIn from './logged-in';
 import LoginButton from './login-button';
 import Recipes from './collections/recipes';
+import {FoodieAppBar} from './components/foodie-app-bar';
+import {FoodieSidebarMenu} from './components/foodie-sidebar-menu';
 
-export class FoodieAppBar extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      logged_in: true,
-      searchTerm: ''
-    }
-  }
-
-  handleChange(event, logged_in) {
-    this.setState({logged_in: logged_in});
-  }
-
-  render() {
-    return (
-      <div>
-      {/*
-        <Toggle
-            label="Logged in/out"
-            defaultToggled={true}
-            onToggle={(i, j) => this.handleChange(i, j)}
-            labelPosition="right"
-            style={{margin: 20}}
-          />
-       */}
-          <AppBar
-            title="Foodie"
-            iconElementRight={this.state.logged_in ? <LoggedIn /> : <LoginButton />}
-          />
-      </div>
-    );
-  }
-}
-
-class FoodieSidebarMenu extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  handleClick = (event) => {
-    this.props.history.push('/new_recipe');
-  }
-
-  renderRecipes = () => {
-    // window.location = '/recipes';
-    this.props.history.push('/recipes');
-  }
-
-  render() {
-    return (
-        <div className="col-xs-3 col-md-3">
-          <Paper>
-            <List>
-              <ListItem
-                primaryText="New Recipe"
-                onClick={this.handleClick}
-              />
-              <ListItem
-                primaryText="All Recipes"
-                onClick={this.renderRecipes}
-              />
-            </List>
-          </Paper>
-        </div>
-    );
-  }
-}
-
-FoodieSidebarMenu = withRouter(FoodieSidebarMenu);
-export {FoodieSidebarMenu};
 
 class RecipesIndex extends React.Component {
   constructor(props) {
@@ -101,7 +33,6 @@ class RecipesIndex extends React.Component {
   }
 
   renderRecipes = (coln, res, options) => {
-    // console.log('res ' + JSON.stringify(res));
     // Perhaps initialize Recipes collection here and access all coln mtds
     console.log(coln);
     this.setState({recipes: res, recipes_loaded: true});

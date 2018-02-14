@@ -23,9 +23,10 @@ import Recipe from './models/recipe.js';
 import Dashboard from './dashboard';
 import MaterialUITestView from './material_ui_test_view';
 import EditRecipeView from './edit-recipe-view';
-import {FoodieAppBar, FoodieSidebarMenu} from './recipes_index.js';
 import {NewInstructionForm} from './new-recipes-view';
 import RecipeInstructions from './components/recipe-instructions';
+import {FoodieAppBar} from './components/foodie-app-bar';
+import {FoodieSidebarMenu} from './components/foodie-sidebar-menu';
 
 
 class RecipeShowView extends React.Component {
