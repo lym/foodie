@@ -114,14 +114,6 @@ class RecipeShowView extends React.Component {
     this.setState({recipe: response});
   }
 
-  renderRecipes() {
-    window.location.pathname = 'recipes';
-  }
-
-  renderNewRecipeForm() {
-    window.location.pathname = '/new_recipe';
-  }
-
   editRecipe = (event, recipe) => {
     console.log('Received recipe ID is: ' + recipe['id']);
     // this.props.history.push('/recipes/' + this.state.recipe['id'] + '/edit/');
