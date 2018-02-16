@@ -28,11 +28,6 @@ class RecipesIndex extends React.Component {
       recipes_loaded: false
 
     };
-    this.recipes = Recipes;  // Here
-    this.recipes.fetch({
-      success: this.renderRecipes,
-      error: this.fetchError
-    });
   }
 
   renderRecipes = (coln, res, options) => {
@@ -74,6 +69,14 @@ class RecipesIndex extends React.Component {
       this.state.searchTerm;
     console.log('Search is being requested ' + this.state.searchTerm);
     $.get(searchURL).done(this.goodSearch).fail(this.badSearch);
+  }
+
+  componentDidMount() {
+    this.recipes = Recipes;  // Here
+    this.recipes.fetch({
+      success: this.renderRecipes,
+      error: this.fetchError
+    });
   }
 
   render() {
@@ -120,7 +123,5 @@ class RecipesIndex extends React.Component {
     );
   }
 }
-
-RecipesIndex = withRouter(RecipesIndex);
 
 export default RecipesIndex;

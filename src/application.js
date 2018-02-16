@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import {withRouter, Switch, Route } from 'react-router-dom';
 
 import LoginView from './login-view';
 import MaterialUITestView from './material_ui_test_view';
@@ -16,7 +16,7 @@ class Application extends React.Component {
         <Route path="/new_recipe" component={NewRecipeView} />
         <Route path="/material_ui_test" component={MaterialUITestView} />
         <Route path="/recipes/:id" component={RecipeShowView} />
-        <Route path="/recipes" component={RecipesIndex} />
+        <Route path="/recipes" component={withRouter(RecipesIndex)} />
       </Switch>
     );
   }
