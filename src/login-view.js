@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import {withRouter, Link} from 'react-router-dom';
 
 import $ from "jquery";
 import _ from "underscore";
@@ -36,8 +36,7 @@ class LoginForm extends React.Component {
   loginSuccess(data) {
     // let session = new Session();
     session.save(data.token);
-    window.location.pathname = '/recipes';
-    // this.props.history.push('/recipes');
+    this.props.history.push('/recipes');
   }
 
   failure() {
@@ -86,6 +85,8 @@ class LoginForm extends React.Component {
     );
   }
 }
+
+LoginForm = withRouter(LoginForm);
 
 class LoginView extends React.Component {
   render() {

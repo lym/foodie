@@ -1,5 +1,5 @@
 import React from 'react';
-import {withRouter, Redirect} from 'react-router-dom';
+import {withRouter, Link, Redirect} from 'react-router-dom';
 import AppBar from 'material-ui/AppBar';
 import {GridList, GridTile} from 'material-ui/GridList';
 import {List, ListItem} from 'material-ui/List';
@@ -9,6 +9,8 @@ import Subheader from 'material-ui/Subheader';
 import Toggle from 'material-ui/Toggle';
 import $ from 'jquery';
 import _ from 'underscore';
+
+import session from './models/session';
 
 import LoggedIn from './logged-in';
 import LoginButton from './login-button';
@@ -21,9 +23,10 @@ class RecipesIndex extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      logged_in: true,
+      logged_in: session.authenticated() ? true : false,
       recipes: [],
       recipes_loaded: false
+
     };
     this.recipes = Recipes;  // Here
     this.recipes.fetch({
@@ -74,6 +77,14 @@ class RecipesIndex extends React.Component {
   }
 
   render() {
+    if (!this.state.logged_in) {
+      return (
+        <div>
+          <h1>Your session expired, please sign in</h1>
+          <Link to="/login">Go to login page</Link>
+        </div>
+      );
+    }
     if (!this.state.recipes_loaded) {
       return <h1>Loading recipes</h1>;
     }
