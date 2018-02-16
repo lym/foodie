@@ -15,7 +15,7 @@ class Application extends React.Component {
         <Route path="/login" component={LoginView} />
         <Route path="/new_recipe" component={NewRecipeView} />
         <Route path="/material_ui_test" component={MaterialUITestView} />
-        <Route path="/recipes/:id" component={RecipeShowView} />
+        <Route path="/recipes/:id" component={withRouter(RecipeShowView)} />
         <Route path="/recipes" component={withRouter(RecipesIndex)} />
       </Switch>
     );

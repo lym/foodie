@@ -220,5 +220,4 @@ class RecipeShowView extends React.Component {
   }
 }
 
-RecipeShowView = withRouter(RecipeShowView);
 export default RecipeShowView;
