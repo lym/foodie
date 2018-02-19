@@ -58,8 +58,7 @@ class EditRecipeForm extends React.Component {
      * TODO: Render recipe show page here. Also replace window.location.pathname
      * with this.props.history.push()
      */
-    window.location.pathname = '/recipes/' + recipe.get('id');
-    // this.props.history.push('/recipes/' + recipe.get('id'));
+    this.props.history.push('/recipes/' + recipe.get('id'));
   }
 
   failure(error) {
@@ -128,6 +127,8 @@ class EditRecipeForm extends React.Component {
     );
   }
 }
+
+EditRecipeForm = withRouter(EditRecipeForm);
 
 class EditRecipeView extends React.Component {
   constructor(props) {
