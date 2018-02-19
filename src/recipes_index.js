@@ -84,7 +84,7 @@ class RecipesIndex extends React.Component {
       return (
         <div>
           <h1>Your session expired, please sign in</h1>
-          <Link to="/login">Go to login page</Link>
+          <a href="/login">Go to login page</a>
         </div>
       );
     }
