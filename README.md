@@ -2,6 +2,10 @@
 Foodie lets people create, share, discover and keep track of amazing
 recipes.
 
+[![Build Status](https://travis-ci.org/lym/foodie.svg?branch=master)](https://travis-ci.org/lym/foodie)
+
+[![Coverage Status](https://coveralls.io/repos/github/lym/foodie/badge.svg?branch=develop)](https://coveralls.io/github/lym/foodie?branch=develop)
+
 ## Features
 - Login/Logout
 - Create, read, edit and delete recipes.
