@@ -8,6 +8,7 @@
     "backbone": "1.3.3",
     "bootstrap": "3.3.7",
     "chai": "4.1.2",
+    "coveralls": "3.0.0",
     "enzyme": "3.3.0",
     "enzyme-adapter-react-16": "1.1.1",
     "history": "4.7.2",
@@ -32,7 +33,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "nyc mocha",
+    "test": "nyc --reporter=html --reporter=text mocha --full-trace --require mock-local-storage --require src/__tests__/setup.js src/__tests__/*.spec.js",
+    "coverage": "nyc report --reporter=text-lcov | node_modules/coveralls/bin/coveralls.js",
     "eject": "react-scripts eject"
   },
   "jest": {
