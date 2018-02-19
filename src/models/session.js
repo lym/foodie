@@ -58,4 +58,6 @@ class Session extends Backbone.Model.extend({}) {
   }
 }
 
-export default Session;
+const session = new Session();
+
+export default session;
