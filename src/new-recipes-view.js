@@ -27,7 +27,8 @@ export class NewRecipeForm extends React.Component {
     console.log(session.get('token'));
     super(props);
     this.state = {
-      userId     : session.get('token'),
+      logged_in   : session.authenticated() ? true : false,
+      userId      : session.get('token'),
       title       : '',
       description : '',
       fulfilled   : '',
@@ -35,7 +36,6 @@ export class NewRecipeForm extends React.Component {
     this.baseURL = 'http://127.0.0.1:5000'
     this.newRecipeEndpoint = this.baseURL + '/recipes/';
 
-    // this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -56,16 +56,11 @@ export class NewRecipeForm extends React.Component {
     recipe = new Recipe();
     recipe.set(data);
     recipes.add([recipe]);
-    // console.log(recipe);
-    // console.log(recipe.get('result'));
-    // TODO: Render recipe show page here
-    console.log(JSON.stringify(recipe));
     window.location.pathname = '/recipes/' + recipe.get('id');
   }
 
   failure(error) {
     console.log('Data submission failed due to: ' + JSON.stringify(error));
-    // this.setState({errorMessage: 'Please check email or password!'});
   }
 
   submitData(data) {
@@ -77,9 +72,7 @@ export class NewRecipeForm extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    console.log("Attempting to submit value" + this.state);
     let formData = this.serializeForm($("form")); //.serializeArray();
-    console.log(formData);
     this.submitData(formData);
   }
 
@@ -153,16 +146,6 @@ export class NewInstructionForm extends NewRecipeForm {
         <input type="hidden" className="form-control" id="recipe_id" name='recipe_id'
                value={this.props.recipe.id} />
 
-        {/*
-        <div className="row">
-          <div className="col-xs-12">
-            <button type="submit"
-                    className="btn btn-primary btn-block btn-flat">
-              Add Instruction
-            </button>
-          </div>
-        </div>
-        */}
       </form>
     );
   }
@@ -181,6 +164,14 @@ class NewRecipeView extends React.Component {
   }
 
   render() {
+    if (!this.state.logged_in) {
+      return (
+        <div>
+          <h1>Your session expired, please sign in</h1>
+          <a href="/login">Go to login page</a>
+        </div>
+      );
+    }
     return (
       <div>
         <FoodieAppBar />
