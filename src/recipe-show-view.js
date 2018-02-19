@@ -34,26 +34,6 @@ class RecipeShowView extends React.Component {
     super(props);
     let recipes = Recipes;
     this.allInstructionsURL = "http://127.0.0.1:5000/instructions/";
-    this.recipe = new Recipe(recipes.url + props.match.params.id + '/');
-    this.recipe.fetch({
-      /*
-       * The `success` and `error` callbacks receive three args:
-       * @model
-       * @response:
-       * @options
-      */
-      success: this.setRecipes,
-      error: function (model, response, options) {
-        console.log('Error: Model not retrieved');
-      }
-    })
-    let instructions = new Instructions({
-      url: this.allInstructionsURL + "?recipe=" + props.match.params.id
-    });
-    instructions.fetch({
-      success: this.logInstructions,
-      error: this.failedInst
-    });
     super(props);  // FIXME: Why is this here?
     this.deleteRecipeEndpoint = recipes.url + props.match.params.id + '/';
     this.state = {
@@ -66,7 +46,6 @@ class RecipeShowView extends React.Component {
   }
 
   logInstructions = (coln, res, options) => {
-    console.log('Retrieved Instructions' + JSON.stringify(res));
     this.setState({instructions: res});
   }
 
@@ -115,8 +94,6 @@ class RecipeShowView extends React.Component {
   }
 
   editRecipe = (event, recipe) => {
-    console.log('Received recipe ID is: ' + recipe['id']);
-    // this.props.history.push('/recipes/' + this.state.recipe['id'] + '/edit/');
     this.setState({editMode: true});
   }
 
@@ -149,7 +126,40 @@ class RecipeShowView extends React.Component {
     this.setState({open: false});
   };
 
+  componentDidMount() {
+    let recipes = Recipes;
+    this.recipe = new Recipe(recipes.url + this.props.match.params.id + '/');
+    this.recipe.fetch({
+      /*
+       * The `success` and `error` callbacks receive three args:
+       * @model
+       * @response:
+       * @options
+      */
+      success: this.setRecipes,
+      error: function (model, response, options) {
+        console.log('Error: Model not retrieved');
+      }
+    });
+
+    let instructions = new Instructions({
+      url: this.allInstructionsURL + "?recipe=" + this.props.match.params.id
+    });
+    instructions.fetch({
+      success: this.logInstructions,
+      error: this.failedInst
+    });
+  }
+
   render() {
+    if (!this.state.logged_in) {
+      return (
+        <div>
+          <h1>Your session expired, please sign in</h1>
+          <a href="/login">Go to login page</a>
+        </div>
+      );
+    }
     if (!this.state.editMode) {
       if (!this.state.recipe) {
         return <h1>Loading recipes</h1>;
